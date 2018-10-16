@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuri.ynweb.dao.WebCaseMapper" >
+  <resultMap id="BaseResultMap" type="com.yuri.ynweb.pojo.WebCase" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pic_pc" property="picPc" jdbcType="VARCHAR" />
+    <result column="pic_mobile" property="picMobile" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="INTEGER" />
+    <result column="pic_small1" property="picSmall1" jdbcType="VARCHAR" />
+    <result column="pic_small2" property="picSmall2" jdbcType="VARCHAR" />
+    <result column="pic_small3" property="picSmall3" jdbcType="VARCHAR" />
+    <result column="pic_small4" property="picSmall4" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="text" property="text" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from web_case
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yuri.ynweb.pojo.WebCase" >
+    insert into web_case (id, pic_pc, pic_mobile, 
+      order_id, pic_small1, pic_small2, 
+      pic_small3, pic_small4, create_time, 
+      update_time, text)
+    values (#{id,jdbcType=INTEGER}, #{picPc,jdbcType=VARCHAR}, #{picMobile,jdbcType=VARCHAR}, 
+      #{orderId,jdbcType=INTEGER}, #{picSmall1,jdbcType=VARCHAR}, #{picSmall2,jdbcType=VARCHAR}, 
+      #{picSmall3,jdbcType=VARCHAR}, #{picSmall4,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{text,jdbcType=LONGVARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.yuri.ynweb.pojo.WebCase" >
+    update web_case
+    set pic_pc = #{picPc,jdbcType=VARCHAR},
+      pic_mobile = #{picMobile,jdbcType=VARCHAR},
+      order_id = #{orderId,jdbcType=INTEGER},
+      pic_small1 = #{picSmall1,jdbcType=VARCHAR},
+      pic_small2 = #{picSmall2,jdbcType=VARCHAR},
+      pic_small3 = #{picSmall3,jdbcType=VARCHAR},
+      pic_small4 = #{picSmall4,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      text = #{text,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, pic_pc, pic_mobile, order_id, pic_small1, pic_small2, pic_small3, pic_small4, 
+    create_time, update_time, text
+    from web_case
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, pic_pc, pic_mobile, order_id, pic_small1, pic_small2, pic_small3, pic_small4, 
+    create_time, update_time, text
+    from web_case
+  </select>
+</mapper>
