@@ -1,13 +1,13 @@
 package com.yuri.ynweb.pojo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import lombok.ToString;
 
 import java.util.Date;
-
-
 @Data
 @ToString
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class WebCooperation {
     private Integer id;
 
@@ -16,14 +16,6 @@ public class WebCooperation {
     private String picMobile;
 
     private Integer orderId;
-
-    private String picSmall1;
-
-    private String picSmall2;
-
-    private String picSmall3;
-
-    private String picSmall4;
 
     private Date createTime;
 

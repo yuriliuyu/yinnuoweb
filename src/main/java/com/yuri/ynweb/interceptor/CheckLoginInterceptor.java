@@ -7,40 +7,38 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 public class CheckLoginInterceptor implements HandlerInterceptor {
 
-    private static final String SESSION_KEY_SYSTEM_USER = "SYSTEM_USER";
-
-    public static final String LOGIN_URL = "/web/login";
-
-    private Logger logger = LoggerFactory.getLogger(CheckLoginInterceptor.class);
+    private Logger logger = LoggerFactory.getLogger("FILE_LOG");
 
     @Override
-    public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
-        HttpSession session = httpServletRequest.getSession();
-        String user = (String) session.getAttribute(SESSION_KEY_SYSTEM_USER);
-        logger.info("user:---" + user);
-        String path = httpServletRequest.getRequestURI();
+    public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) {
+        Map<String, String[]> requestParams = httpServletRequest.getParameterMap();
+        ConcurrentHashMap<String, String> params = new ConcurrentHashMap<>();
+        for (Iterator<String> iter = requestParams.keySet().iterator(); iter.hasNext(); ) {
+            String name = iter.next();
+            String[] values = requestParams.get(name);
+            String valueStr = "";
+            for (int i = 0; i < values.length; i++) {
+                valueStr = (i == values.length - 1) ? valueStr + values[i] : valueStr + values[i] + ",";
+            }
+            params.put(name, valueStr);
 
-        if(user == null){
-            httpServletResponse.sendRedirect(LOGIN_URL);
-            logger.info("redirect");
-            return false;
-        }else{
-            return true;
         }
+        logger.info("用户访问接口{},参数{}", new Object[]{httpServletRequest.getRequestURI(), params.toString()});
+        return true;
     }
 
     @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
-        logger.info("postHandle");
     }
 
     @Override
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
-        logger.info("afterHandle");
     }
 }

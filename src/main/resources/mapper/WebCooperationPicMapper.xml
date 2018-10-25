@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuri.ynweb.dao.WebCooperationPicMapper">
+  <resultMap id="BaseResultMap" type="com.yuri.ynweb.pojo.WebCooperationPic" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pic_pc" property="picPc" jdbcType="VARCHAR" />
+    <result column="pic_mobile" property="picMobile" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="co_id" property="coId" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from web_cooperation_pic
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yuri.ynweb.pojo.WebCooperationPic" >
+    insert into web_cooperation_pic (id, pic_pc, pic_mobile,
+      order_id, create_time, update_time,
+      co_id)
+    values (#{id,jdbcType=INTEGER}, #{picPc,jdbcType=VARCHAR}, #{picMobile,jdbcType=VARCHAR},
+      #{orderId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{coId,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.yuri.ynweb.pojo.WebCooperationPic" >
+    update web_cooperation_pic
+    set pic_pc = #{picPc,jdbcType=VARCHAR},
+      pic_mobile = #{picMobile,jdbcType=VARCHAR},
+      order_id = #{orderId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      co_id = #{coId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, pic_pc, pic_mobile, order_id, create_time, update_time, co_id
+    from web_cooperation_pic
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, pic_pc, pic_mobile, order_id, create_time, update_time, co_id
+    from web_cooperation_pic
+  </select>
+
+  <select id="deleteByCoId" parameterType="java.lang.Integer" resultType="map">
+      select pic_pc,pic_mobile from web_cooperation_pic where co_id=#{coId} order by order_id desc
+    </select>
+
+  <select id="getListByCaseId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, pic_pc, pic_mobile
+    from web_cooperation_pic
+    where co_id = #{coId,jdbcType=INTEGER} order by order_id desc
+  </select>
+
+</mapper>

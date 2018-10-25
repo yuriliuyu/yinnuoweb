@@ -1,5 +1,6 @@
 package com.yuri.ynweb.pojo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import lombok.ToString;
 
@@ -7,6 +8,7 @@ import java.util.Date;
 
 @Data
 @ToString
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class WebBanner {
     private Integer id;
 

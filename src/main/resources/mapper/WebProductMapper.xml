@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yuri.ynweb.dao.WebProductMapper">
-  <resultMap id="BaseResultMap" type="com.yuri.ynweb.pojo.WebProduct">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="pic_pc" jdbcType="VARCHAR" property="picPc" />
-    <result column="pic_mobile" jdbcType="VARCHAR" property="picMobile" />
-    <result column="order_id" jdbcType="INTEGER" property="orderId" />
-    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="description" jdbcType="LONGVARCHAR" property="description" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <resultMap id="BaseResultMap" type="com.yuri.ynweb.pojo.WebProduct">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="pic_pc" jdbcType="VARCHAR" property="picPc"/>
+        <result column="pic_mobile" jdbcType="VARCHAR" property="picMobile"/>
+        <result column="order_id" jdbcType="INTEGER" property="orderId"/>
+        <result column="category_id" jdbcType="INTEGER" property="categoryId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="description" jdbcType="LONGVARCHAR" property="description"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from web_product
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.yuri.ynweb.pojo.WebProduct">
+    <insert id="insert" parameterType="com.yuri.ynweb.pojo.WebProduct">
     insert into web_product (id, name, pic_pc, 
       pic_mobile, order_id, category_id, 
       create_time, update_time, description
@@ -26,7 +26,7 @@
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{description,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.yuri.ynweb.pojo.WebProduct">
+    <update id="updateByPrimaryKey" parameterType="com.yuri.ynweb.pojo.WebProduct">
     update web_product
     set name = #{name,jdbcType=VARCHAR},
       pic_pc = #{picPc,jdbcType=VARCHAR},
@@ -38,15 +38,36 @@
       description = #{description,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select id, name, pic_pc, pic_mobile, order_id, category_id, create_time, update_time, 
     description
     from web_product
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap">
+    <select id="selectAll" resultMap="BaseResultMap">
     select id, name, pic_pc, pic_mobile, order_id, category_id, create_time, update_time, 
     description
     from web_product
   </select>
+    <resultMap id="findParamsMap" type="map">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="picPc" column="pic_pc"/>
+        <result property="description" column="description"/>
+        <collection property="paramList" column="id" ofType="map" javaType="java.util.List"
+                    select="getParamsByProductId">
+            <result property="paramName" column="param_name"/>
+            <result property="paramValue" column="param_value"/>
+        </collection>
+    </resultMap>
+    <select id="getParamsByProductId" parameterType="java.lang.Integer" resultType="map">
+      select parm_name, parm_value from web_product_param where product_id=#{productId} order by order_id desc
+    </select>
+    <select id="getProductPage" resultMap="findParamsMap">
+      SELECT id, name, pic_pc,description FROM web_product where category_id=#{catId} ORDER BY order_id desc
+    </select>
+    <select id="getProductPageBackend" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+      select id, name, pic_pc, pic_mobile, order_id, category_id,description
+      from web_product where category_id=#{catId} order by order_id desc
+    </select>
 </mapper>

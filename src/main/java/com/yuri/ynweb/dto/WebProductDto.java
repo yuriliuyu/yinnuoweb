@@ -1,28 +1,36 @@
-package com.yuri.ynweb.pojo;
+package com.yuri.ynweb.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.yuri.ynweb.pojo.WebProductParam;
 import lombok.Data;
 import lombok.ToString;
 
 import java.util.Date;
+import java.util.List;
 
 @ToString
 @Data
 @JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
-public class WebProductParam {
+public class WebProductDto {
     private Integer id;
 
-    private Integer productId;
+    private String name;
 
-    private String parmName;
+    private String picPc;
 
-    private String parmValue;
+    private String picMobile;
 
     private Integer orderId;
+
+    private Integer categoryId;
 
     private Date createTime;
 
     private Date updateTime;
+
+    private String description;
+
+    private List<WebProductParam> params;
 
 
 }

@@ -5,18 +5,15 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.util.Date;
-
-@ToString
 @Data
+@ToString
 @JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
-public class WebProductParam {
+public class WebCasePic {
     private Integer id;
 
-    private Integer productId;
+    private String picPc;
 
-    private String parmName;
-
-    private String parmValue;
+    private String picMobile;
 
     private Integer orderId;
 
@@ -24,5 +21,6 @@ public class WebProductParam {
 
     private Date updateTime;
 
+    private Integer caseId;
 
 }

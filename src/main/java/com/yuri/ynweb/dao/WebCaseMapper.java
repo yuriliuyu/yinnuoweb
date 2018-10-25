@@ -1,6 +1,8 @@
 package com.yuri.ynweb.dao;
 
+import com.github.pagehelper.Page;
 import com.yuri.ynweb.pojo.WebCase;
+
 import java.util.List;
 
 public interface WebCaseMapper {
@@ -13,4 +15,8 @@ public interface WebCaseMapper {
     List<WebCase> selectAll();
 
     int updateByPrimaryKey(WebCase record);
+
+    Page getCasePage();
+
+    Page<WebCase> getCasePageBackend();
 }

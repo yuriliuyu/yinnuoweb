@@ -13,4 +13,9 @@ public interface WebProductParamMapper {
     List<WebProductParam> selectAll();
 
     int updateByPrimaryKey(WebProductParam record);
+
+    List<WebProductParam> getListByProductId(Integer productId);
+
+    int deleteParamsByProductId(Integer productId);
+
 }

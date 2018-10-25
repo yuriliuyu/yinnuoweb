@@ -10,7 +10,7 @@ spring:
     static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${web.upload-path}
   datasource:
     name: ynweb
-    url: jdbc:mysql://127.0.0.1:3306/yinnuo_web
+    url: jdbc:mysql://127.0.0.1:3306/yinnuo_web?characterEncoding=UTF-8&useSSL=false&autoReconnect=true
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver
@@ -28,4 +28,9 @@ spring:
 mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml
   type-aliases-package: com.yuri.ynweb.pojo
+pagehelper:
+  helperDialect: mysql
+  reasonablez: true
+  supportMethodsArguments: true
+  params: count=countSql
 

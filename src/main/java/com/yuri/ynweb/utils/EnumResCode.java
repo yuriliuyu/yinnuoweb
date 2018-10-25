@@ -4,11 +4,11 @@ public enum EnumResCode {
     /**
      * server成功
      */
-    SUCCESSFUL(1),
+    SUCCESSFUL(0),
     /**
      * server失败
      */
-    SERVER_ERROR(0);
+    SERVER_ERROR(-1);
 
     private EnumResCode(int status) {
         this.status = status;
