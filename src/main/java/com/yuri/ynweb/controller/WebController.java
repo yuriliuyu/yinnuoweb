@@ -106,7 +106,6 @@ public class WebController {
     @RequestMapping(value = "/banner/save", method = RequestMethod.POST)
     public String bannerSave(WebBanner banner, Map<Object, Object> map, ModelMap resultMap) {
         map.put("webServer", webServerUrl);
-        System.out.println(banner);
         return "redirect:/web/banners";
     }
 

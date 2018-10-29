@@ -24,7 +24,6 @@ public class BannerController {
 
     @RequestMapping(value = "/front/banners", method = RequestMethod.GET)
     public BaseJsonResultVO banners() {
-        logger.info("测试");
         List<WebBanner> list = bannerService.getBanners();
         BaseJsonResultVO vo = new BaseJsonResultVO();
         vo.setCode(EnumResCode.SUCCESSFUL.value());
@@ -102,5 +101,4 @@ public class BannerController {
         vo.setMessage("ok");
         return vo;
     }
-
 }

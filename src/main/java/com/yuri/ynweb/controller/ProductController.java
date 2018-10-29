@@ -75,7 +75,6 @@ public class ProductController {
         if(!StringUtils.isEmpty(String.valueOf(orderId)) && orderId != null){
             product.setOrderId(orderId);
         }
-        System.out.println(orderId);
         if(!StringUtils.isEmpty(name)){
             product.setName(name);
         }
