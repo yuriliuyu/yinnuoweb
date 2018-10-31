@@ -42,11 +42,11 @@
     from web_cooperation_pic
   </select>
 
-  <select id="deleteByCoId" parameterType="java.lang.Integer" resultType="map">
-      select pic_pc,pic_mobile from web_cooperation_pic where co_id=#{coId} order by order_id desc
-    </select>
+  <delete id="deleteByCoId" parameterType="java.lang.Integer">
+      delete from web_cooperation_pic where co_id=#{coId}
+    </delete>
 
-  <select id="getListByCaseId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="getPicsByCoId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select id, pic_pc, pic_mobile
     from web_cooperation_pic
     where co_id = #{coId,jdbcType=INTEGER} order by order_id desc

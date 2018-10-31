@@ -24,7 +24,7 @@ public class CaseController {
     public BaseJsonResultVO cases(@RequestParam(value = "pagesize") Integer pageSize, @RequestParam(value = "pageno") Integer pageNo) {
         Page casePage = caseService.findByPage(pageNo, pageSize);
         BaseJsonResultVO vo = new BaseJsonResultVO();
-        return ServletUtils.pageValue(vo,casePage,pageNo);
+        return ServletUtils.pageValue(vo, casePage, pageNo);
     }
 
     @RequestMapping(value = "/backend/add", method = RequestMethod.POST)
@@ -79,14 +79,17 @@ public class CaseController {
     @RequestMapping(value = "/backend/delete", method = RequestMethod.POST)
     public BaseJsonResultVO deleteCase(@RequestParam(value = "id") Integer id) {
         BaseJsonResultVO vo = new BaseJsonResultVO();
-        if (caseService.deleteById(id) == 1 && caseService.deletePicsByCaseId(id) == 1) {
+        try {
+            caseService.deleteById(id);
+            caseService.deletePicsByCaseId(id);
             vo.setCode(EnumResCode.SUCCESSFUL.value());
             vo.setMessage("ok");
             return vo;
+        } catch (Exception e) {
+            vo.setCode(EnumResCode.SERVER_ERROR.value());
+            vo.setMessage("删除案例失败");
+            return vo;
         }
-        vo.setCode(EnumResCode.SERVER_ERROR.value());
-        vo.setMessage("删除案例失败");
-        return vo;
     }
 
     @RequestMapping(value = "/backend/case/{id}", method = RequestMethod.GET)
@@ -136,7 +139,7 @@ public class CaseController {
 
     @RequestMapping(value = "/backend/editpic", method = RequestMethod.POST)
     public BaseJsonResultVO editCasePic(@RequestParam(value = "id") Integer id, @RequestParam(value = "picpc", required = false) String picPc, @RequestParam(value = "picmobile", required = false) String picMobile, @RequestParam(value = "orderid", required = false) Integer orderId,
-        @RequestParam(value = "caseid") Integer caseId){
+                                        @RequestParam(value = "caseid") Integer caseId) {
 
         BaseJsonResultVO vo = new BaseJsonResultVO();
         WebCasePic casePic = caseService.getPicById(id);
@@ -168,20 +171,27 @@ public class CaseController {
                                        @RequestParam(value = "caseid") Integer caseId) {
 
         BaseJsonResultVO vo = new BaseJsonResultVO();
-        WebCasePic pic = new WebCasePic();
-        pic.setPicPc(picPc);
-        pic.setPicMobile(picMobile);
-        pic.setOrderId(orderId);
-        pic.setCaseId(caseId);
-        pic.setCreateTime(new Date());
+        if(caseService.getCaseById(caseId) != null){
+            WebCasePic pic = new WebCasePic();
+            pic.setPicPc(picPc);
+            pic.setPicMobile(picMobile);
+            pic.setOrderId(orderId);
+            pic.setCaseId(caseId);
+            pic.setCreateTime(new Date());
 
-        if (caseService.insertCasePic(pic) == 1) {
-            vo.setCode(EnumResCode.SUCCESSFUL.value());
-            vo.setMessage("ok");
+            if (caseService.insertCasePic(pic) == 1) {
+                vo.setCode(EnumResCode.SUCCESSFUL.value());
+                vo.setMessage("ok");
+                return vo;
+            }
+            vo.setCode(EnumResCode.SERVER_ERROR.value());
+            vo.setMessage("新增案例图片失败");
+            return vo;
+        }else{
+            vo.setCode(EnumResCode.SERVER_ERROR.value());
+            vo.setMessage("无此案例");
             return vo;
         }
-        vo.setCode(EnumResCode.SERVER_ERROR.value());
-        vo.setMessage("新增案例图片失败");
-        return vo;
+
     }
 }

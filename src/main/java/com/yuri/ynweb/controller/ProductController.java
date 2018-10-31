@@ -39,7 +39,7 @@ public class ProductController {
 
     @RequestMapping(value = "/backend/add", method = RequestMethod.POST)
     public BaseJsonResultVO addProduct(@RequestParam(value = "picpc") String picPc, @RequestParam(value = "picmobile") String picMobile, @RequestParam(value = "orderid") Integer orderId,
-    @RequestParam(value = "name") String name, @RequestParam(value = "description") String description, @RequestParam(value = "categoryid") Integer categoryId) {
+                                       @RequestParam(value = "name") String name, @RequestParam(value = "description") String description, @RequestParam(value = "categoryid") Integer categoryId) {
         BaseJsonResultVO vo = new BaseJsonResultVO();
 
         WebProduct product = new WebProduct();
@@ -65,23 +65,23 @@ public class ProductController {
     public BaseJsonResultVO editProduct(@RequestParam(value = "id") Integer id, @RequestParam(value = "picpc", required = false) String picPc, @RequestParam(value = "picmobile", required = false) String picMobile, @RequestParam(value = "orderid", required = false) Integer orderId,
                                         @RequestParam(value = "name", required = false) String name, @RequestParam(value = "description", required = false) String description, @RequestParam(value = "categoryid", required = false) Integer categoryId) {
         BaseJsonResultVO vo = new BaseJsonResultVO();
-        WebProduct product =  productService.getProductById(id);
-        if(!StringUtils.isEmpty(picPc)){
+        WebProduct product = productService.getProductById(id);
+        if (!StringUtils.isEmpty(picPc)) {
             product.setPicPc(picPc);
         }
-        if(!StringUtils.isEmpty(picMobile)){
+        if (!StringUtils.isEmpty(picMobile)) {
             product.setPicMobile(picMobile);
         }
-        if(!StringUtils.isEmpty(String.valueOf(orderId)) && orderId != null){
+        if (!StringUtils.isEmpty(String.valueOf(orderId)) && orderId != null) {
             product.setOrderId(orderId);
         }
-        if(!StringUtils.isEmpty(name)){
+        if (!StringUtils.isEmpty(name)) {
             product.setName(name);
         }
-        if(!StringUtils.isEmpty(description)){
+        if (!StringUtils.isEmpty(description)) {
             product.setDescription(description);
         }
-        if(!StringUtils.isEmpty(String.valueOf(categoryId)) && categoryId != null){
+        if (!StringUtils.isEmpty(String.valueOf(categoryId)) && categoryId != null) {
             product.setCategoryId(categoryId);
         }
         if (productService.updateProductById(product) == 1) {
@@ -95,20 +95,23 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/backend/delete", method = RequestMethod.POST)
-    public BaseJsonResultVO deleteProduct(@RequestParam(value = "id") Integer id){
+    public BaseJsonResultVO deleteProduct(@RequestParam(value = "id") Integer id) {
         BaseJsonResultVO vo = new BaseJsonResultVO();
-        if (productService.deleteById(id) == 1 && productService.deleteParamsByProductId(id) == 1) {
+        try {
+            productService.deleteById(id);
+            productService.deleteParamsByProductId(id);
             vo.setCode(EnumResCode.SUCCESSFUL.value());
             vo.setMessage("ok");
             return vo;
+        } catch (Exception e) {
+            vo.setCode(EnumResCode.SERVER_ERROR.value());
+            vo.setMessage("删除商品失败");
+            return vo;
         }
-        vo.setCode(EnumResCode.SERVER_ERROR.value());
-        vo.setMessage("删除商品失败");
-        return vo;
     }
 
     @RequestMapping(value = "/backend/product/{id}", method = RequestMethod.GET)
-    public BaseJsonResultVO banner(@PathVariable Integer id){
+    public BaseJsonResultVO banner(@PathVariable Integer id) {
         BaseJsonResultVO vo = new BaseJsonResultVO();
         WebProduct product = productService.getProductById(id);
         vo.setData(product);
@@ -140,7 +143,7 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/backend/deleteparam", method = RequestMethod.POST)
-    public BaseJsonResultVO deleteProductParam(@RequestParam(value = "id") Integer id){
+    public BaseJsonResultVO deleteProductParam(@RequestParam(value = "id") Integer id) {
         BaseJsonResultVO vo = new BaseJsonResultVO();
         if (productService.deleteParamById(id) == 1) {
             vo.setCode(EnumResCode.SUCCESSFUL.value());
@@ -155,14 +158,14 @@ public class ProductController {
     @RequestMapping(value = "/backend/editparam", method = RequestMethod.POST)
     public BaseJsonResultVO editProductParam(@RequestParam(value = "id") Integer id, @RequestParam(value = "name", required = false) String name, @RequestParam(value = "value", required = false) String value, @RequestParam(value = "orderid", required = false) Integer orderId) {
         BaseJsonResultVO vo = new BaseJsonResultVO();
-        WebProductParam productParam =  productService.getproductParamById(id);
-        if(!StringUtils.isEmpty(name)){
+        WebProductParam productParam = productService.getproductParamById(id);
+        if (!StringUtils.isEmpty(name)) {
             productParam.setParmName(name);
         }
-        if(!StringUtils.isEmpty(value)){
+        if (!StringUtils.isEmpty(value)) {
             productParam.setParmValue(value);
         }
-        if(!StringUtils.isEmpty(String.valueOf(orderId)) && orderId != null){
+        if (!StringUtils.isEmpty(String.valueOf(orderId)) && orderId != null) {
             productParam.setOrderId(orderId);
         }
 
@@ -178,24 +181,30 @@ public class ProductController {
 
     @RequestMapping(value = "/backend/addParam", method = RequestMethod.POST)
     public BaseJsonResultVO addProductParam(@RequestParam(value = "name") String name, @RequestParam(value = "value") String value, @RequestParam(value = "orderid") Integer orderId,
-                                       @RequestParam(value = "productid") Integer productId) {
+                                            @RequestParam(value = "productid") Integer productId) {
         BaseJsonResultVO vo = new BaseJsonResultVO();
+        if(productService.getProductById(productId) != null){
+            WebProductParam param = new WebProductParam();
+            param.setParmValue(value);
+            param.setParmName(name);
+            param.setOrderId(orderId);
+            param.setProductId(productId);
+            param.setCreateTime(new Date());
 
-        WebProductParam param = new WebProductParam();
-        param.setParmValue(value);
-        param.setParmName(name);
-        param.setOrderId(orderId);
-        param.setProductId(productId);
-        param.setCreateTime(new Date());
-
-        if (productService.insertProductParam(param) == 1) {
-            vo.setCode(EnumResCode.SUCCESSFUL.value());
-            vo.setMessage("ok");
+            if (productService.insertProductParam(param) == 1) {
+                vo.setCode(EnumResCode.SUCCESSFUL.value());
+                vo.setMessage("ok");
+                return vo;
+            }
+            vo.setCode(EnumResCode.SERVER_ERROR.value());
+            vo.setMessage("新增商品属性失败");
+            return vo;
+        }else{
+            vo.setCode(EnumResCode.SERVER_ERROR.value());
+            vo.setMessage("无此商品");
             return vo;
         }
-        vo.setCode(EnumResCode.SERVER_ERROR.value());
-        vo.setMessage("新增商品属性失败");
-        return vo;
+
     }
 
 

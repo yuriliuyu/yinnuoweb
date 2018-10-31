@@ -52,7 +52,4 @@
     where case_id = #{caseId,jdbcType=INTEGER} order by order_id desc
   </select>
 
-  <select id="getPicsByCaseId" parameterType="java.lang.Integer" resultType="map">
-      select pic_pc,pic_mobile from web_case_pic where case_id=#{caseId} order by order_id desc
-    </select>
 </mapper>

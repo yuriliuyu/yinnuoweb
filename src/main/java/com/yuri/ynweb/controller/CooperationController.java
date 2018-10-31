@@ -79,14 +79,17 @@ public class CooperationController {
     @RequestMapping(value = "/backend/delete", method = RequestMethod.POST)
     public BaseJsonResultVO deleteCooperation(@RequestParam(value = "id") Integer id) {
         BaseJsonResultVO vo = new BaseJsonResultVO();
-        if (coService.deleteById(id) == 1 && coService.deletePicsByCoId(id) == 1) {
+        try {
+            coService.deleteById(id);
+            coService.deletePicsByCoId(id);
             vo.setCode(EnumResCode.SUCCESSFUL.value());
             vo.setMessage("ok");
             return vo;
+        } catch (Exception e) {
+            vo.setCode(EnumResCode.SERVER_ERROR.value());
+            vo.setMessage("删除合作失败");
+            return vo;
         }
-        vo.setCode(EnumResCode.SERVER_ERROR.value());
-        vo.setMessage("删除合作失败");
-        return vo;
     }
 
     @RequestMapping(value = "/backend/co/{id}", method = RequestMethod.GET)
@@ -135,8 +138,8 @@ public class CooperationController {
     }
 
     @RequestMapping(value = "/backend/editpic", method = RequestMethod.POST)
-    public BaseJsonResultVO editCoPic(@RequestParam(value = "id") Integer id, @RequestParam(value = "picpc", required = false) String picPc, @RequestParam(value = "picmobile", required = false) String picMobile, @RequestParam(value = "orderid", required = false) Integer orderId,
-                                      @RequestParam(value = "coid") Integer coId) {
+    public BaseJsonResultVO editCoPic(@RequestParam(value = "id") Integer id, @RequestParam(value = "picpc", required = false) String picPc,
+                                      @RequestParam(value = "picmobile", required = false) String picMobile, @RequestParam(value = "orderid", required = false) Integer orderId) {
 
         BaseJsonResultVO vo = new BaseJsonResultVO();
         WebCooperationPic coPic = coService.getPicById(id);
@@ -146,9 +149,7 @@ public class CooperationController {
         if (!StringUtils.isEmpty(picPc)) {
             coPic.setPicPc(picPc);
         }
-        if (!StringUtils.isEmpty(String.valueOf(coId)) && coId != null) {
-            coPic.setCoId(coId);
-        }
+
         if (!StringUtils.isEmpty(String.valueOf(orderId)) && orderId != null) {
             coPic.setOrderId(orderId);
         }
@@ -166,23 +167,28 @@ public class CooperationController {
     @RequestMapping(value = "/backend/addpic", method = RequestMethod.POST)
     public BaseJsonResultVO addCoPic(@RequestParam(value = "picpc") String picPc, @RequestParam(value = "picmobile") String picMobile, @RequestParam(value = "orderid") Integer orderId,
                                      @RequestParam(value = "coid") Integer coId) {
-
         BaseJsonResultVO vo = new BaseJsonResultVO();
-        WebCooperationPic pic = new WebCooperationPic();
-        pic.setPicPc(picPc);
-        pic.setPicMobile(picMobile);
-        pic.setOrderId(orderId);
-        pic.setCoId(coId);
-        pic.setCreateTime(new Date());
+        if(coService.getCooperationById(coId) != null){
+            WebCooperationPic pic = new WebCooperationPic();
+            pic.setPicPc(picPc);
+            pic.setPicMobile(picMobile);
+            pic.setOrderId(orderId);
+            pic.setCoId(coId);
+            pic.setCreateTime(new Date());
 
-        if (coService.insertCoPic(pic) == 1) {
-            vo.setCode(EnumResCode.SUCCESSFUL.value());
-            vo.setMessage("ok");
+            if (coService.insertCoPic(pic) == 1) {
+                vo.setCode(EnumResCode.SUCCESSFUL.value());
+                vo.setMessage("ok");
+                return vo;
+            }
+            vo.setCode(EnumResCode.SERVER_ERROR.value());
+            vo.setMessage("新增合作图片失败");
+            return vo;
+        }else{
+            vo.setCode(EnumResCode.SERVER_ERROR.value());
+            vo.setMessage("无此合作项");
             return vo;
         }
-        vo.setCode(EnumResCode.SERVER_ERROR.value());
-        vo.setMessage("新增案例图片失败");
-        return vo;
     }
 
 }
