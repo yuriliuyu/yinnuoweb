@@ -37,6 +37,6 @@
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select id, pic_pc, pic_mobile, order_id
-    from web_banner order by order_id desc
+    from web_banner order by order_id
   </select>
 </mapper>

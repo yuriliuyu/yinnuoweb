@@ -42,7 +42,7 @@
     from web_case
   </select>
   <select id="getCasePage" resultMap="findDetailMap">
-      SELECT id, pic_pc, pic_mobile, text FROM web_case ORDER BY order_id desc
+      SELECT id, pic_pc, pic_mobile, text FROM web_case ORDER BY order_id
     </select>
   <resultMap id="findDetailMap" type="map">
     <result property="id" column="id"/>
@@ -56,11 +56,11 @@
     </collection>
   </resultMap>
   <select id="getPicsByCaseId" parameterType="java.lang.Integer" resultType="map">
-      select pic_pc, pic_mobile from web_case_pic where case_id=#{caseId} order by order_id desc
+      select pic_pc, pic_mobile from web_case_pic where case_id=#{caseId} order by order_id
   </select>
   <select id="getCasePageBackend" parameterType="java.lang.Integer" resultMap="BaseResultMap">
       select id, pic_pc, pic_mobile, text
-      from web_case  order by order_id desc
+      from web_case  order by order_id
     </select>
 
 </mapper>

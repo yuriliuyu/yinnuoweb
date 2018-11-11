@@ -49,7 +49,7 @@
   <select id="getListByCaseId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select id, pic_pc, pic_mobile
     from web_case_pic
-    where case_id = #{caseId,jdbcType=INTEGER} order by order_id desc
+    where case_id = #{caseId,jdbcType=INTEGER} order by order_id
   </select>
 
 </mapper>

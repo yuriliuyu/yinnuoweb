@@ -61,13 +61,13 @@
         </collection>
     </resultMap>
     <select id="getParamsByProductId" parameterType="java.lang.Integer" resultType="map">
-      select parm_name, parm_value from web_product_param where product_id=#{productId} order by order_id desc
+      select parm_name, parm_value from web_product_param where product_id=#{productId} order by order_id
     </select>
     <select id="getProductPage" resultMap="findParamsMap">
-      SELECT id, name, pic_pc,description FROM web_product where category_id=#{catId} ORDER BY order_id desc
+      SELECT id, name, pic_pc,description FROM web_product where category_id=#{catId} ORDER BY order_id
     </select>
     <select id="getProductPageBackend" parameterType="java.lang.Integer" resultMap="BaseResultMap">
       select id, name, pic_pc, pic_mobile, order_id, category_id,description
-      from web_product where category_id=#{catId} order by order_id desc
+      from web_product where category_id=#{catId} order by order_id
     </select>
 </mapper>

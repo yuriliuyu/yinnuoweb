@@ -49,6 +49,6 @@
   <select id="getListByProductId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select id, parm_name, parm_value, order_id
     from web_product_param
-    where product_id = #{productId,jdbcType=INTEGER} order by order_id desc
+    where product_id = #{productId,jdbcType=INTEGER} order by order_id
   </select>
 </mapper>
