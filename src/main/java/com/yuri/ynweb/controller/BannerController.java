@@ -32,7 +32,7 @@ public class BannerController {
         return vo;
     }
 
-    @RequestMapping(value = "/bankend/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/backend/add", method = RequestMethod.POST)
     public BaseJsonResultVO addBanner(@RequestParam(value = "picpc") String picPc, @RequestParam(value = "picmobile") String picMobile, @RequestParam(value = "orderid") String orderId) {
         BaseJsonResultVO vo = new BaseJsonResultVO();
         if (!StringUtils.isNumeric(orderId)) {
