@@ -132,6 +132,16 @@ public class ProductController {
         return vo;
     }
 
+    @RequestMapping(value = "/backend/param/{id}", method = RequestMethod.GET)
+    public BaseJsonResultVO param(@PathVariable Integer id) {
+        BaseJsonResultVO vo = new BaseJsonResultVO();
+        WebProductParam productParam = productService.getproductParamById(id);
+        vo.setData(productParam);
+        vo.setCode(EnumResCode.SUCCESSFUL.value());
+        vo.setMessage("ok");
+        return vo;
+    }
+
     @RequestMapping(value = "/backend/params", method = RequestMethod.POST)
     public BaseJsonResultVO banners(@RequestParam(value = "productid") Integer productId) {
         List<WebProductParam> list = productService.getParamsByProductId(productId);
