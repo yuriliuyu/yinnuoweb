@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8086
 web:
   upload-path: /usr/local/var/www
   server-url: http://localhost
