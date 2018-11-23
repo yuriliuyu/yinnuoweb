@@ -191,4 +191,14 @@ public class CooperationController {
         }
     }
 
+    @RequestMapping(value = "/backend/copic/{id}", method = RequestMethod.GET)
+    public BaseJsonResultVO webCooperationPic(@PathVariable Integer id) {
+        BaseJsonResultVO vo = new BaseJsonResultVO();
+        WebCooperationPic cooperationPic = coService.getPicById(id);
+        vo.setData(cooperationPic);
+        vo.setCode(EnumResCode.SUCCESSFUL.value());
+        vo.setMessage("ok");
+        return vo;
+    }
+
 }

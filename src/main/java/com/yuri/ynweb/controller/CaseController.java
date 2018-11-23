@@ -194,4 +194,14 @@ public class CaseController {
         }
 
     }
+
+    @RequestMapping(value = "/backend/casepic/{id}", method = RequestMethod.GET)
+    public BaseJsonResultVO webCasePic(@PathVariable Integer id) {
+        BaseJsonResultVO vo = new BaseJsonResultVO();
+        WebCasePic webCasePic = caseService.getPicById(id);
+        vo.setData(webCasePic);
+        vo.setCode(EnumResCode.SUCCESSFUL.value());
+        vo.setMessage("ok");
+        return vo;
+    }
 }
